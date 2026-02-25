@@ -19,6 +19,7 @@ import com.example.mediatekformationmobile.contract.IFormationsView;
 import com.example.mediatekformationmobile.model.Formation;
 import com.example.mediatekformationmobile.presenter.FormationsPresenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,12 +28,15 @@ import java.util.List;
 public class FormationsActivity extends AppCompatActivity implements IFormationsView {
 
     private FormationsPresenter presenter;
+    private boolean ecranFavoris;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_formations);
+        Intent intent = getIntent();
+        ecranFavoris = intent.getBooleanExtra("ecranFavoris", false);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -55,7 +59,7 @@ public class FormationsActivity extends AppCompatActivity implements IFormations
      * Traitements nécessaires dès la création de l'activity
      */
     private void init(){
-        presenter = new FormationsPresenter(this);
+        presenter = new FormationsPresenter(this, this);
         presenter.chargerFormations();
         chargerObjetsGraphiques();
         btnFiltrer.setOnClickListener(v ->
@@ -71,7 +75,7 @@ public class FormationsActivity extends AppCompatActivity implements IFormations
     public void afficherListe(List formations) {
         if (formations != null){
             RecyclerView lstHisto = (RecyclerView) findViewById(R.id.lstFormations);
-            FormationListAdapter adapter = new FormationListAdapter(formations, FormationsActivity.this);
+            FormationListAdapter adapter = new FormationListAdapter(formations, FormationsActivity.this, ecranFavoris);
             lstHisto.setAdapter(adapter);
             lstHisto.setLayoutManager(new LinearLayoutManager(FormationsActivity.this));
         }

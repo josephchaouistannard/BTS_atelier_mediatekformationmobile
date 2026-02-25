@@ -12,6 +12,7 @@ public class Formation implements Serializable {
     private String title;
     private String description;
     private String video_id;
+    private boolean favorite;
 
     /**
      * Constructeur : valorise les propriétés privées
@@ -29,6 +30,7 @@ public class Formation implements Serializable {
         this.title = title;
         this.description = description;
         this.video_id = video_id;
+        this.favorite = false;
     }
 
     public int getId() {
@@ -61,5 +63,13 @@ public class Formation implements Serializable {
 
     public String getVideoId() {
         return video_id;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 }

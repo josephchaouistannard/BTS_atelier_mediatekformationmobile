@@ -53,16 +53,17 @@ public class MainActivity extends AppCompatActivity {
      * Demande de création des écoutes sur les boutons
      */
     private void creerMenu(){
-        btnFormations.setOnClickListener(v -> ecouteMenu(FormationsActivity.class));
-
+        btnFormations.setOnClickListener(v -> ecouteMenu(FormationsActivity.class, false));
+        btnFavoris.setOnClickListener(v -> ecouteMenu(FormationsActivity.class, true));
     }
 
     /**
      * Ouvre l'activity correspondant au paramètre
      * @param classe
      */
-    private void ecouteMenu(Class classe){
+    private void ecouteMenu(Class classe, boolean ecranFavoris){
         Intent intent = new Intent(MainActivity.this, classe);
+        intent.putExtra("ecranFavoris", ecranFavoris);
         startActivity(intent);
     }
 }

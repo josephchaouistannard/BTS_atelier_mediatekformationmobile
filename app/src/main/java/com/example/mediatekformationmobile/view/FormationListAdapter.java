@@ -16,6 +16,7 @@ import com.example.mediatekformationmobile.model.Formation;
 import com.example.mediatekformationmobile.presenter.FormationsPresenter;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -24,15 +25,29 @@ public class FormationListAdapter extends RecyclerView.Adapter<FormationListAdap
 
     private List<Formation> formations;
     private IFormationsView vue;
+    private static final String ROUGE = "rouge";
+    private static final String GRIS = "gris";
+    private boolean ecranFavoris;
 
     /**
      * Constructeur : valorise les propriétés privées
      * @param formations
      * @param vue
      */
-    public FormationListAdapter(List<Formation> formations, IFormationsView vue){
-        this.formations = formations;
+    public FormationListAdapter(List<Formation> formations, IFormationsView vue, boolean ecranFavoris){
         this.vue = vue;
+        this.ecranFavoris = ecranFavoris;
+        if (ecranFavoris) {
+            List<Formation> lesFavoris = new ArrayList<>();
+            formations.forEach(formation -> {
+                if (formation.isFavorite()) {
+                    lesFavoris.add(formation);
+                }
+                this.formations = lesFavoris;
+            });
+        } else {
+            this.formations = formations;
+        }
     }
 
     /**
@@ -61,15 +76,20 @@ public class FormationListAdapter extends RecyclerView.Adapter<FormationListAdap
      */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Formation formation = formations.get(position);
         // récupération du titre pour l'affichage
-        String title = formations.get(position).getTitle();
+        String title = formation.getTitle();
         holder.txtListeTitle.setText(title);
         // récupération de la date pour l'affichage
-        Date publishedAt = formations.get(position).getPublishedAt();
+        Date publishedAt = formation.getPublishedAt();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String dateFormatee = sdf.format(publishedAt);
         holder.txtListPublishedAt.setText(dateFormatee);
-
+        if (formation.isFavorite()) {
+            couleurCoeur(ROUGE, holder.btnListFavori);
+        } else {
+            couleurCoeur(GRIS, holder.btnListFavori);
+        }
     }
 
     /**
@@ -80,6 +100,14 @@ public class FormationListAdapter extends RecyclerView.Adapter<FormationListAdap
     @Override
     public int getItemCount() {
         return formations.size();
+    }
+
+    private void couleurCoeur(String couleur, ImageButton btn) {
+        if (couleur.equals(ROUGE)) {
+            btn.setImageResource(R.drawable.coeur_rouge);
+        } else {
+            btn.setImageResource(R.drawable.coeur_gris);
+        }
     }
 
     /**
@@ -107,9 +135,28 @@ public class FormationListAdapter extends RecyclerView.Adapter<FormationListAdap
          * initialisations
          */
         private void init(){
-            presenter = new FormationsPresenter(vue);
+            presenter = new FormationsPresenter(vue, itemView.getContext());
             txtListeTitle.setOnClickListener(v -> txtListeTitleOrPublishedAt_clic());
             txtListPublishedAt.setOnClickListener(v -> txtListeTitleOrPublishedAt_clic());
+            btnListFavori.setOnClickListener(v ->  btnListFavori_clic());
+        }
+
+        private void btnListFavori_clic() {
+            int position = getBindingAdapterPosition();
+            Formation formation = formations.get(position);
+            if (formation.isFavorite()) {
+                formation.setFavorite(false);
+                presenter.supprimerFavorite(formation.getId());
+                couleurCoeur(GRIS, btnListFavori);
+                if (ecranFavoris) {
+                    formations.remove(position);
+                    notifyItemRemoved(position);
+                }
+            } else {
+                formation.setFavorite(true);
+                presenter.ajouterFavorite(formation);
+                couleurCoeur(ROUGE, btnListFavori);
+            }
         }
 
         /**
