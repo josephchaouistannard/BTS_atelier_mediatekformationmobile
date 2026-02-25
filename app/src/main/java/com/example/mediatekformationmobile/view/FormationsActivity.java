@@ -2,6 +2,8 @@ package com.example.mediatekformationmobile.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -39,12 +41,25 @@ public class FormationsActivity extends AppCompatActivity implements IFormations
         init();
     }
 
+    private Button btnFiltrer;
+    private EditText txtFiltre;
+    /**
+     * Stocke les élements graphiques nécessaires dans des propriétés privées
+     */
+    private void chargerObjetsGraphiques() {
+        this.btnFiltrer = (Button) findViewById(R.id.btnFiltrer);
+        this.txtFiltre = (EditText) findViewById(R.id.txtFiltre);
+    }
+
     /**
      * Traitements nécessaires dès la création de l'activity
      */
     private void init(){
         presenter = new FormationsPresenter(this);
         presenter.chargerFormations();
+        chargerObjetsGraphiques();
+        btnFiltrer.setOnClickListener(v ->
+                presenter.filtrerFormations(this.txtFiltre.getText().toString()));
     }
 
     /**

@@ -5,6 +5,8 @@ import com.example.mediatekformationmobile.api.ICallbackApi;
 import com.example.mediatekformationmobile.contract.IFormationsView;
 import com.example.mediatekformationmobile.model.Formation;
 
+import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,6 +24,8 @@ public class FormationsPresenter {
         this.vue = vue;
     }
 
+    private List<Formation> lesFormations;
+
     /**
      * Récupère les formations de la BDD distante et les envoie à la vue
      */
@@ -35,6 +39,7 @@ public class FormationsPresenter {
                     if (formations != null && !formations.isEmpty()) {
                         Collections.sort(formations, (p1, p2) -> p2.getPublishedAt().compareTo(p1.getPublishedAt()));
                         vue.afficherListe(formations);
+                        lesFormations = formations;
                     }else{
                         vue.afficherMessage("échec chargement formations");
                     }
@@ -47,6 +52,24 @@ public class FormationsPresenter {
                 vue.afficherMessage("échec chargement formations");
             }
         });
+    }
+
+    /**
+     * Filtre les formations en local dont le titre contient une chaîne passé en paramètre
+     * @param titre
+     */
+    public void filtrerFormations(String titre) {
+        if (titre != null && !titre.isEmpty()) {
+            List<Formation> lesFormationsFiltrees = new ArrayList<>();
+            lesFormations.forEach(formation -> {
+                if (formation.getTitle().toLowerCase().contains(titre.toLowerCase())) {
+                    lesFormationsFiltrees.add(formation);
+                }
+            });
+            vue.afficherListe(lesFormationsFiltrees);
+        } else {
+            vue.afficherListe(lesFormations);
+        }
     }
 
     /**
