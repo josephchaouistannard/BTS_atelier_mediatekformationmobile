@@ -6,8 +6,9 @@ En sélectionnant un titre, une page présente plus de détails sur la formation
 
 ### Page 1 : l'accueil
 La page d'accueil présente le menu :<br>
-. "les formations" : avec en dessous, une image cliquable qui permet d'accéder à la page des formations.<br>
-. "mes favoris" : avec en dessous, une image cliquable qui permet d'accéder à la page des formations mais affichant seulement les favoris.<br>
+- "les formations" : avec en dessous, une image cliquable qui permet d'accéder à la page des formations.<br>
+- "mes favoris" : avec en dessous, une image cliquable qui permet d'accéder à la page des formations mais affichant seulement les favoris.<br>
+
 ![img1](https://github.com/user-attachments/assets/8d25dbea-89a6-44a8-a969-fc508b933f96)
 <br>
 Le code se trouve dans MainActivity lié au layout activity_main.<br>	 
@@ -16,6 +17,7 @@ Le code se trouve dans MainActivity lié au layout activity_main.<br>
 La page des formations affiche la liste des formations avec, sur chaque ligne :<br>
 - un cœur actuellement qui permet de sélectionner les favoris ;<br>
 - la date de la formation et, en dessous, son titre en plus gros.<br>
+
 La liste est triée sur la date de parution, dans l'ordre inverse (la plus récente en premier).<br>
 Au-dessus de la liste, une zone de saisie et un bouton "filtrer" doit permettre de filtrer les lignes sur le titre (en tapant une partie du titre, la casse n'est pas prise en compte). Si le bouton "filtrer" est utilisé alors que la zone de saisie est vide, toutes les formations sont être à nouveau affichées.<br>
 Le clic sur une date ou un titre de formation permet d'accéder à la page suivante de la présentation du détail d'une formation.<br>
@@ -31,6 +33,7 @@ La page de présentation d'une formation contient, de haut en bas :<br>
 - le titre de la formation (en gros) ;<br>
 - la date de parution ;<br>
 - le sous-titre "description" avec, en dessous, la description détaillée dans une zone déroulante (dans le cas où elle dépasse la taille de la zone d'affichage).<br>
+
 Le clic sur l'image permet d'accéder à la page suivante contenant la vidéo. Si la formation n'a pas d'image, une image standard s'affiche, cependant, la fonctionnalité d'accès à la page de la vidéo est opérationnelle.<br>
 Le clic sur la flèche à gauche du titre permet de revenir à la page de la liste des formations.<br>
 <img width="211" height="448" alt="image" src="https://github.com/user-attachments/assets/3ce08a64-e07e-4a55-89b2-d6bf6559db32" />
@@ -69,9 +72,10 @@ Explication des champs :<br>
 L'application utilise aussi une BDD locale pour sauvegarder les formations favorites. Il y simplement une table avec une colonne qui liste les ids des formations.<br>
 
 ## Contenu de l'API REST
-L'API REST qui est accessible ici :<br>
-<a href="https://github.com/josephchaouistannard/BTS_atelier_mediatekdocuments_api">https://github.com/josephchaouistannard/BTS_atelier_mediatekdocuments_api</a><br>
+L'API REST qui permet d'accéder à la base de données est construite à partir de la structure de rest_chocoltein accessible ici :<br>
+<a href="https://github.com/CNED-SLAM/rest_chocolatein">https://github.com/CNED-SLAM/rest_chocolatein</a><br>
 Pour comprendre son fonctionnement, il est conseillé de lire le Readme de ce dépôt.<br>
+
 ## Installation des applications
 ### API REST
 Pour tester l'application mediatekformationmobile local, il faut d'abord installer l'API. Voici le mode opératoire :<br>
