@@ -11,6 +11,8 @@ import retrofit2.Response;
  */
 public class HelperApi {
 
+    private HelperApi() {}
+
     // Crée l'objet d'accès à l'api avec les différentes méthodes d'accès
     private static final IRequestApi api = FormationApi.getRetrofit() //récupère l'instance unique d'accès à l'api
             .create(IRequestApi.class); // crée une instance d'une classe ananyme qui implémente l'interface

@@ -12,7 +12,7 @@ public interface IFormationsView extends IAllView {
      * Méthode permettant le transfert de la liste des formations pour affichage
      * @param formations
      */
-    void afficherListe(List formations);
+    void afficherListe(List<Formation> formations);
 
     /**
      * Méthode permettant le transfert d'une formation vers une activity

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.IntentCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -61,7 +62,7 @@ public class UneFormationActivity extends AppCompatActivity {
      */
     private void init(){
         chargeObjetsGraphiques();
-        btnPicture.setOnClickListener(v -> btnPicture_clic());
+        btnPicture.setOnClickListener(v -> btnPictureClic());
         recupFormation();
     }
 
@@ -78,7 +79,7 @@ public class UneFormationActivity extends AppCompatActivity {
     /**
      * Traitements réalisés lors du clic sur l'image
      */
-    private void btnPicture_clic(){
+    private void btnPictureClic(){
         if(formation != null) {
             Intent intent = new Intent(UneFormationActivity.this, VideoActivity.class);
             intent.putExtra("formation", formation);
@@ -90,7 +91,7 @@ public class UneFormationActivity extends AppCompatActivity {
      * Récupère la formation envoyée par une autre activity (FormationsActivity)
      */
     private void recupFormation(){
-        formation = (Formation) getIntent().getSerializableExtra("formation");
+        formation = IntentCompat.getSerializableExtra(getIntent(), "formation", Formation.class);
         if(formation!=null) {
             Date datePublication = formation.getPublishedAt();
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
@@ -109,20 +110,15 @@ public class UneFormationActivity extends AppCompatActivity {
      */
     private void loadMapPreview (ImageButton img, String url) {
         //start a background thread for networking
-        new Thread(new Runnable() {
-            public void run(){
-                try {
-                    //download the drawable
-                    final Drawable drawable = Drawable.createFromStream((InputStream) new URL(url).getContent(), "src");
-                    //edit the view in the UI thread
-                    img.post(new Runnable() {
-                        public void run() {
-                            img.setImageDrawable(drawable);
-                        }
-                    });
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        new Thread(() -> {
+            try {
+                // download the drawable
+                final Drawable drawable = Drawable.createFromStream((InputStream) new URL(url).getContent(), "src");
+                // edit the view in the UI thread
+                img.post(() -> img.setImageDrawable(drawable));
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }).start();
     }

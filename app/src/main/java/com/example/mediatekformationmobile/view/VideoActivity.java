@@ -6,6 +6,7 @@ import android.webkit.WebViewClient;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.IntentCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -45,12 +46,11 @@ public class VideoActivity extends AppCompatActivity {
      * et affiche la vidéo
      */
     private void recupFormation(){
-        Formation formation = (Formation) getIntent().getSerializableExtra("formation");
+        Formation formation = IntentCompat.getSerializableExtra(getIntent(), "formation", Formation.class);
         if(formation!=null) {
             wbvYoutube = findViewById(R.id.wbvYoutube);
             wbvYoutube.getSettings().setJavaScriptEnabled(true);
             wbvYoutube.setWebViewClient(new WebViewClient());
-//            wbvYoutube.loadUrl("https://www.youtube.com/embed/" + formation.getVideoId());
             wbvYoutube.loadUrl("https://www.youtube.com/watch?v=" + formation.getVideoId());
         }
     }

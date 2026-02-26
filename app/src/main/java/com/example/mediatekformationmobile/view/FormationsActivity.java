@@ -26,8 +26,6 @@ import java.util.List;
  * Activity pour afficher la liste des formations
  */
 public class FormationsActivity extends AppCompatActivity implements IFormationsView {
-
-    private FormationsPresenter presenter;
     private boolean ecranFavoris;
 
     @Override
@@ -59,7 +57,7 @@ public class FormationsActivity extends AppCompatActivity implements IFormations
      * Traitements nécessaires dès la création de l'activity
      */
     private void init(){
-        presenter = new FormationsPresenter(this, this);
+        FormationsPresenter presenter = new FormationsPresenter(this, this);
         presenter.chargerFormations();
         chargerObjetsGraphiques();
         btnFiltrer.setOnClickListener(v ->

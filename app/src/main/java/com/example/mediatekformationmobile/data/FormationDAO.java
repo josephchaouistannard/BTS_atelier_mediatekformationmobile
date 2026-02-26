@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 import com.example.mediatekformationmobile.model.Formation;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class FormationDAO extends SQLiteOpenHelper {

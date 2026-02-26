@@ -1,5 +1,6 @@
 package com.example.mediatekformationmobile.view;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
      * Ouvre l'activity correspondant au paramètre
      * @param classe
      */
-    private void ecouteMenu(Class classe, boolean ecranFavoris){
+    private void ecouteMenu(Class<? extends Activity> classe, boolean ecranFavoris){
         Intent intent = new Intent(MainActivity.this, classe);
         intent.putExtra("ecranFavoris", ecranFavoris);
         startActivity(intent);

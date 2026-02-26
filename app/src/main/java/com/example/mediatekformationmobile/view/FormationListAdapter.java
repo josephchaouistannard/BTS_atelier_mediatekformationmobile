@@ -136,12 +136,12 @@ public class FormationListAdapter extends RecyclerView.Adapter<FormationListAdap
          */
         private void init(){
             presenter = new FormationsPresenter(vue, itemView.getContext());
-            txtListeTitle.setOnClickListener(v -> txtListeTitleOrPublishedAt_clic());
-            txtListPublishedAt.setOnClickListener(v -> txtListeTitleOrPublishedAt_clic());
-            btnListFavori.setOnClickListener(v ->  btnListFavori_clic());
+            txtListeTitle.setOnClickListener(v -> txtListeTitleOrPublishedAtClic());
+            txtListPublishedAt.setOnClickListener(v -> txtListeTitleOrPublishedAtClic());
+            btnListFavori.setOnClickListener(v ->  btnListFavoriClic());
         }
 
-        private void btnListFavori_clic() {
+        private void btnListFavoriClic() {
             int position = getBindingAdapterPosition();
             Formation formation = formations.get(position);
             if (formation.isFavorite()) {
@@ -163,7 +163,7 @@ public class FormationListAdapter extends RecyclerView.Adapter<FormationListAdap
          * Clic sur un des textes de la ligne :
          * transfert de la formation vers l'activity UneFormationActivity
          */
-        private void txtListeTitleOrPublishedAt_clic(){
+        private void txtListeTitleOrPublishedAtClic(){
             int position = getBindingAdapterPosition();
             presenter.transfertFormation(formations.get(position));
         }

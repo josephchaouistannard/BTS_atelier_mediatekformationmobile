@@ -8,7 +8,6 @@ import com.example.mediatekformationmobile.contract.IFormationsView;
 import com.example.mediatekformationmobile.data.FormationDAO;
 import com.example.mediatekformationmobile.model.Formation;
 
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +19,7 @@ public class FormationsPresenter {
     private IFormationsView vue;
     private FormationDAO formationDAO;
     private List<Integer> lesFavorites;
+    private static final String ERREUR_CHARGEMENT = "échec chargement formations";
 
     /**
      * Constructeur : valorise la propriété qui permet d'accéder à la vue
@@ -40,23 +40,20 @@ public class FormationsPresenter {
         HelperApi.call(HelperApi.getApi().getFormations(), new ICallbackApi<List<Formation>>(){
             @Override
             public void onSuccess(List<Formation> result) {
-                if(result != null){
+                if(result != null && !result.isEmpty()){
                     List<Formation> formations = result;
-                    if (formations != null && !formations.isEmpty()) {
-                        Collections.sort(formations, (p1, p2) -> p2.getPublishedAt().compareTo(p1.getPublishedAt()));
-                        lesFormations = identifierFavorites(formations);
-                        nettoyerFavoritesLocales();
-                        vue.afficherListe(lesFormations);
-                    }else{
-                        vue.afficherMessage("échec chargement formations");
-                    }
+                    Collections.sort(formations, (p1, p2) ->
+                            p2.getPublishedAt().compareTo(p1.getPublishedAt()));
+                    lesFormations = identifierFavorites(formations);
+                    nettoyerFavoritesLocales();
+                    vue.afficherListe(lesFormations);
                 }else{
-                    vue.afficherMessage("échec chargement formations");
+                    vue.afficherMessage(ERREUR_CHARGEMENT);
                 }
             }
             @Override
             public void onError() {
-                vue.afficherMessage("échec chargement formations");
+                vue.afficherMessage(ERREUR_CHARGEMENT);
             }
         });
     }
@@ -125,9 +122,9 @@ public class FormationsPresenter {
         List<Integer> idsFavoritesASupprimer = new ArrayList<>();
         List<Integer> idsToutesFormations = new ArrayList<>();
         // Sortir les id de toutes les formations
-        lesFormations.forEach(formation -> {
-            idsToutesFormations.add(formation.getId());
-        });
+        lesFormations.forEach(formation ->
+            idsToutesFormations.add(formation.getId())
+        );
         // Trouver les formations dans les favoris pas dans les formations
         lesFavorites.forEach(id -> {
             if (!idsToutesFormations.contains(id)) {
@@ -135,9 +132,7 @@ public class FormationsPresenter {
             }
         });
         // Supprimer les de la BDD locale
-        idsFavoritesASupprimer.forEach(id -> {
-            supprimerFavorite(id);
-        });
+        idsFavoritesASupprimer.forEach(this::supprimerFavorite);
     }
 
 
